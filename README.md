@@ -14,7 +14,7 @@
 </pre>
 * Ejecutar 🚀
 * Adicionalmente: después de cargar en el explorador el localhost con el número de puerto, puede agregarse a la URL */swagger* 
-para probar todos los controladores y acciones de la API
+para probar todos los controladores y acciones de la API, ejemplo: http://localhost:50366/swagger
 
 ## Herramientas de desarrollo
 * Visual Studio 2017 Community
