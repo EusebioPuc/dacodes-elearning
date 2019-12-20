@@ -77,10 +77,10 @@ también se tiene una "Calificacion", para posteriormente compararse con el Punt
 ### Preguntas. 
 Se tiene el CRUD (solamente lo pueden usar los maestros activos)
 Son las preguntas que tiene la lección, existen 4 tipos en el catálogo TipoPregunta:
-*1	Booleana: 2 Respuestas, 1 es verdadera
-*2	Multiple 1 Correcta: Opción múltiple donde solo una respuesta es correcta 
-*3	Multiple +1 Correcta: Opción múltiple donde más de una respuesta es correcta
-*4	Multiple +1 Forsosa Correcta: Opción múltiple donde más de una respuesta es correcta y todas deben responderse correctamente
+* 1	Booleana: 2 Respuestas, 1 es verdadera
+* 2	Multiple 1 Correcta: Opción múltiple donde solo una respuesta es correcta 
+* 3	Multiple +1 Correcta: Opción múltiple donde más de una respuesta es correcta
+* 4	Multiple +1 Forsosa Correcta: Opción múltiple donde más de una respuesta es correcta y todas deben responderse correctamente
 Se puso en un catálogo porque son las iniciales en el proyecto, pero podrían crearse más.
 <pre>
   //Es el JSON base es
