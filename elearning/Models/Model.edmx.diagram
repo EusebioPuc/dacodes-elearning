@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="560af3a1a2764752b6427d09b428115f" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="elearningModel.AlumnoCursoEstatus" Width="1.875" PointX="0.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="elearningModel.AlumnoLeccion" Width="1.5" PointX="5.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="elearningModel.AlumnoPregunta" Width="1.5" PointX="9.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="elearningModel.Curso" Width="1.5" PointX="0.5" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="elearningModel.TipoPregunta" Width="1.5" PointX="6.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="elearningModel.Usuario" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoPregunta_AlumnoLeccion" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="elearningModel.Leccion" Width="1.5" PointX="3.375" PointY="7.375" />
+        <EntityTypeShape EntityType="elearningModel.Respuesta" Width="1.5" PointX="8.875" PointY="8.625" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoLeccion_Leccion" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoPregunta_Respuesta" />
+        <AssociationConnector Association="elearningModel.FK_Leccion_Curso" />
+        <EntityTypeShape EntityType="elearningModel.Pregunta" Width="1.5" PointX="6" PointY="7.375" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoPregunta_Pregunta" />
+        <AssociationConnector Association="elearningModel.FK_Pregunta_Leccion" />
+        <AssociationConnector Association="elearningModel.FK_Pregunta_TipoPregunta" />
+        <AssociationConnector Association="elearningModel.FK_Respuesta_Pregunta" />
+        <EntityTypeShape EntityType="elearningModel.AlumnoCurso" Width="1.5" PointX="2.75" PointY="2.25" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoCurso_AlumnoCursoEstatus" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoCurso_Curso" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoCurso_Usuario" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoCurso_Usuario1" />
+        <AssociationConnector Association="elearningModel.FK_AlumnoLeccion_AlumnoCurso" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

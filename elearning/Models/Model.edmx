@@ -1,0 +1,809 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="elearningModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AlumnoCurso">
+          <Key>
+            <PropertyRef Name="IdAlumnoCurso" />
+          </Key>
+          <Property Name="IdAlumnoCurso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAlumno" Type="int" Nullable="false" />
+          <Property Name="IdCurso" Type="int" Nullable="false" />
+          <Property Name="IdMaestro" Type="int" />
+          <Property Name="IdAlumnoCursoEstatus" Type="int" Nullable="false" />
+          <Property Name="Calificacion" Type="decimal" Precision="5" Scale="2" />
+        </EntityType>
+        <EntityType Name="AlumnoCursoEstatus">
+          <Key>
+            <PropertyRef Name="IdAlumnoCursoEstatus" />
+          </Key>
+          <Property Name="IdAlumnoCursoEstatus" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EstatusCurso" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AlumnoLeccion">
+          <Key>
+            <PropertyRef Name="IdAlumnoLeccion" />
+          </Key>
+          <Property Name="IdAlumnoLeccion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAlumnoCurso" Type="int" Nullable="false" />
+          <Property Name="IdLeccion" Type="int" Nullable="false" />
+          <Property Name="Calificacion" Type="decimal" Precision="5" Scale="2" />
+        </EntityType>
+        <EntityType Name="AlumnoPregunta">
+          <Key>
+            <PropertyRef Name="IdAlumnoPregunta" />
+          </Key>
+          <Property Name="IdAlumnoPregunta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAlumnoLeccion" Type="int" Nullable="false" />
+          <Property Name="IdPregunta" Type="int" Nullable="false" />
+          <Property Name="IdRespuesta" Type="int" Nullable="false" />
+          <Property Name="Puntos" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Correcto" Type="bit" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="IdCurso" />
+          </Key>
+          <Property Name="IdCurso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Curso" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Estatus" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Leccion">
+          <Key>
+            <PropertyRef Name="IdLeccion" />
+          </Key>
+          <Property Name="IdLeccion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Leccion" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Contenido" Type="varchar(max)" />
+          <Property Name="IdCurso" Type="int" Nullable="false" />
+          <Property Name="PuntajeAprobatorio" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Estatus" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pregunta">
+          <Key>
+            <PropertyRef Name="IdPregunta" />
+          </Key>
+          <Property Name="IdPregunta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pregunta" Type="varchar(max)" />
+          <Property Name="IdTipoPregunta" Type="int" Nullable="false" />
+          <Property Name="IdLeccion" Type="int" Nullable="false" />
+          <Property Name="Puntos" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Estatus" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Respuesta">
+          <Key>
+            <PropertyRef Name="IdRespuesta" />
+          </Key>
+          <Property Name="IdRespuesta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Respuesta" Type="varchar(max)" Nullable="false" />
+          <Property Name="Correcta" Type="bit" Nullable="false" />
+          <Property Name="IdPregunta" Type="int" Nullable="false" />
+          <Property Name="Estatus" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoPregunta">
+          <Key>
+            <PropertyRef Name="IdTipoPregunta" />
+          </Key>
+          <Property Name="IdTipoPregunta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoPregunta" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Correo" Type="varchar(max)" Nullable="false" />
+          <Property Name="Contrasenia" Type="varchar(max)" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="50" />
+          <Property Name="IdRol" Type="int" Nullable="false" />
+          <Property Name="Token" Type="varchar(max)" />
+          <Property Name="Estatus" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AlumnoCurso_AlumnoCursoEstatus">
+          <End Role="AlumnoCursoEstatus" Type="Self.AlumnoCursoEstatus" Multiplicity="1" />
+          <End Role="AlumnoCurso" Type="Self.AlumnoCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AlumnoCursoEstatus">
+              <PropertyRef Name="IdAlumnoCursoEstatus" />
+            </Principal>
+            <Dependent Role="AlumnoCurso">
+              <PropertyRef Name="IdAlumnoCursoEstatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoCurso_Curso">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
+          <End Role="AlumnoCurso" Type="Self.AlumnoCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="IdCurso" />
+            </Principal>
+            <Dependent Role="AlumnoCurso">
+              <PropertyRef Name="IdCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoCurso_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="AlumnoCurso" Type="Self.AlumnoCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="AlumnoCurso">
+              <PropertyRef Name="IdAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoCurso_Usuario1">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="AlumnoCurso" Type="Self.AlumnoCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="AlumnoCurso">
+              <PropertyRef Name="IdMaestro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoLeccion_AlumnoCurso">
+          <End Role="AlumnoCurso" Type="Self.AlumnoCurso" Multiplicity="1" />
+          <End Role="AlumnoLeccion" Type="Self.AlumnoLeccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AlumnoCurso">
+              <PropertyRef Name="IdAlumnoCurso" />
+            </Principal>
+            <Dependent Role="AlumnoLeccion">
+              <PropertyRef Name="IdAlumnoCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoLeccion_Leccion">
+          <End Role="Leccion" Type="Self.Leccion" Multiplicity="1" />
+          <End Role="AlumnoLeccion" Type="Self.AlumnoLeccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leccion">
+              <PropertyRef Name="IdLeccion" />
+            </Principal>
+            <Dependent Role="AlumnoLeccion">
+              <PropertyRef Name="IdLeccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoPregunta_AlumnoLeccion">
+          <End Role="AlumnoLeccion" Type="Self.AlumnoLeccion" Multiplicity="1" />
+          <End Role="AlumnoPregunta" Type="Self.AlumnoPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AlumnoLeccion">
+              <PropertyRef Name="IdAlumnoLeccion" />
+            </Principal>
+            <Dependent Role="AlumnoPregunta">
+              <PropertyRef Name="IdAlumnoLeccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoPregunta_Pregunta">
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="1" />
+          <End Role="AlumnoPregunta" Type="Self.AlumnoPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
+              <PropertyRef Name="IdPregunta" />
+            </Principal>
+            <Dependent Role="AlumnoPregunta">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoPregunta_Respuesta">
+          <End Role="Respuesta" Type="Self.Respuesta" Multiplicity="1" />
+          <End Role="AlumnoPregunta" Type="Self.AlumnoPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Respuesta">
+              <PropertyRef Name="IdRespuesta" />
+            </Principal>
+            <Dependent Role="AlumnoPregunta">
+              <PropertyRef Name="IdRespuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leccion_Curso">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
+          <End Role="Leccion" Type="Self.Leccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="IdCurso" />
+            </Principal>
+            <Dependent Role="Leccion">
+              <PropertyRef Name="IdCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pregunta_Leccion">
+          <End Role="Leccion" Type="Self.Leccion" Multiplicity="1" />
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leccion">
+              <PropertyRef Name="IdLeccion" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="IdLeccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pregunta_TipoPregunta">
+          <End Role="TipoPregunta" Type="Self.TipoPregunta" Multiplicity="1" />
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoPregunta">
+              <PropertyRef Name="IdTipoPregunta" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="IdTipoPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Respuesta_Pregunta">
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="1" />
+          <End Role="Respuesta" Type="Self.Respuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
+              <PropertyRef Name="IdPregunta" />
+            </Principal>
+            <Dependent Role="Respuesta">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="elearningModelStoreContainer">
+          <EntitySet Name="AlumnoCurso" EntityType="Self.AlumnoCurso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AlumnoCursoEstatus" EntityType="Self.AlumnoCursoEstatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AlumnoLeccion" EntityType="Self.AlumnoLeccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AlumnoPregunta" EntityType="Self.AlumnoPregunta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Leccion" EntityType="Self.Leccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pregunta" EntityType="Self.Pregunta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Respuesta" EntityType="Self.Respuesta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoPregunta" EntityType="Self.TipoPregunta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AlumnoCurso_AlumnoCursoEstatus" Association="Self.FK_AlumnoCurso_AlumnoCursoEstatus">
+            <End Role="AlumnoCursoEstatus" EntitySet="AlumnoCursoEstatus" />
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoCurso_Curso" Association="Self.FK_AlumnoCurso_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoCurso_Usuario" Association="Self.FK_AlumnoCurso_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoCurso_Usuario1" Association="Self.FK_AlumnoCurso_Usuario1">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoLeccion_AlumnoCurso" Association="Self.FK_AlumnoLeccion_AlumnoCurso">
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+            <End Role="AlumnoLeccion" EntitySet="AlumnoLeccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoLeccion_Leccion" Association="Self.FK_AlumnoLeccion_Leccion">
+            <End Role="Leccion" EntitySet="Leccion" />
+            <End Role="AlumnoLeccion" EntitySet="AlumnoLeccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoPregunta_AlumnoLeccion" Association="Self.FK_AlumnoPregunta_AlumnoLeccion">
+            <End Role="AlumnoLeccion" EntitySet="AlumnoLeccion" />
+            <End Role="AlumnoPregunta" EntitySet="AlumnoPregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoPregunta_Pregunta" Association="Self.FK_AlumnoPregunta_Pregunta">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="AlumnoPregunta" EntitySet="AlumnoPregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoPregunta_Respuesta" Association="Self.FK_AlumnoPregunta_Respuesta">
+            <End Role="Respuesta" EntitySet="Respuesta" />
+            <End Role="AlumnoPregunta" EntitySet="AlumnoPregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leccion_Curso" Association="Self.FK_Leccion_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="Leccion" EntitySet="Leccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pregunta_Leccion" Association="Self.FK_Pregunta_Leccion">
+            <End Role="Leccion" EntitySet="Leccion" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pregunta_TipoPregunta" Association="Self.FK_Pregunta_TipoPregunta">
+            <End Role="TipoPregunta" EntitySet="TipoPregunta" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Respuesta_Pregunta" Association="Self.FK_Respuesta_Pregunta">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="Respuesta" EntitySet="Respuesta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="elearningModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AlumnoCursoEstatus">
+          <Key>
+            <PropertyRef Name="IdAlumnoCursoEstatus" />
+          </Key>
+          <Property Name="IdAlumnoCursoEstatus" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EstatusCurso" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AlumnoLeccion">
+          <Key>
+            <PropertyRef Name="IdAlumnoLeccion" />
+          </Key>
+          <Property Name="IdAlumnoLeccion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAlumnoCurso" Type="Int32" Nullable="false" />
+          <Property Name="IdLeccion" Type="Int32" Nullable="false" />
+          <Property Name="Calificacion" Type="Decimal" Precision="5" Scale="2" />
+          <NavigationProperty Name="Leccion" Relationship="elearningModel.FK_AlumnoLeccion_Leccion" FromRole="AlumnoLeccion" ToRole="Leccion" />
+          <NavigationProperty Name="AlumnoCurso" Relationship="elearningModel.FK_AlumnoLeccion_AlumnoCurso" FromRole="AlumnoLeccion" ToRole="AlumnoCurso" />
+        </EntityType>
+        <EntityType Name="AlumnoPregunta">
+          <Key>
+            <PropertyRef Name="IdAlumnoPregunta" />
+          </Key>
+          <Property Name="IdAlumnoPregunta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAlumnoLeccion" Type="Int32" Nullable="false" />
+          <Property Name="IdPregunta" Type="Int32" Nullable="false" />
+          <Property Name="IdRespuesta" Type="Int32" Nullable="false" />
+          <Property Name="Puntos" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Correcto" Type="Boolean" />
+          <NavigationProperty Name="AlumnoLeccion" Relationship="Self.FK_AlumnoPregunta_AlumnoLeccion" FromRole="AlumnoPregunta" ToRole="AlumnoLeccion" />
+          <NavigationProperty Name="Respuesta" Relationship="elearningModel.FK_AlumnoPregunta_Respuesta" FromRole="AlumnoPregunta" ToRole="Respuesta" />
+          <NavigationProperty Name="Pregunta" Relationship="elearningModel.FK_AlumnoPregunta_Pregunta" FromRole="AlumnoPregunta" ToRole="Pregunta" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="IdCurso" />
+          </Key>
+          <Property Name="IdCurso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Curso1" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Estatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoPregunta">
+          <Key>
+            <PropertyRef Name="IdTipoPregunta" />
+          </Key>
+          <Property Name="IdTipoPregunta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoPregunta1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Correo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contrasenia" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdRol" Type="Int32" Nullable="false" />
+          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Estatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="AlumnoCurso" Relationship="elearningModel.FK_AlumnoCurso_Usuario" FromRole="Usuario" ToRole="AlumnoCurso" />
+          <NavigationProperty Name="AlumnoCurso1" Relationship="elearningModel.FK_AlumnoCurso_Usuario1" FromRole="Usuario" ToRole="AlumnoCurso" />
+        </EntityType>
+        <Association Name="FK_AlumnoPregunta_AlumnoLeccion">
+          <End Role="AlumnoLeccion" Type="Self.AlumnoLeccion" Multiplicity="1" />
+          <End Role="AlumnoPregunta" Type="Self.AlumnoPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AlumnoLeccion">
+              <PropertyRef Name="IdAlumnoLeccion" />
+            </Principal>
+            <Dependent Role="AlumnoPregunta">
+              <PropertyRef Name="IdAlumnoLeccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="elearningEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AlumnoCursoEstatus" EntityType="Self.AlumnoCursoEstatus" />
+          <EntitySet Name="AlumnoLeccion" EntityType="Self.AlumnoLeccion" />
+          <EntitySet Name="AlumnoPregunta" EntityType="Self.AlumnoPregunta" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" />
+          <EntitySet Name="TipoPregunta" EntityType="Self.TipoPregunta" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_AlumnoPregunta_AlumnoLeccion" Association="Self.FK_AlumnoPregunta_AlumnoLeccion">
+            <End Role="AlumnoLeccion" EntitySet="AlumnoLeccion" />
+            <End Role="AlumnoPregunta" EntitySet="AlumnoPregunta" />
+          </AssociationSet>
+          <EntitySet Name="Leccion" EntityType="elearningModel.Leccion" />
+          <EntitySet Name="Respuesta" EntityType="elearningModel.Respuesta" />
+          <AssociationSet Name="FK_AlumnoLeccion_Leccion" Association="elearningModel.FK_AlumnoLeccion_Leccion">
+            <End Role="Leccion" EntitySet="Leccion" />
+            <End Role="AlumnoLeccion" EntitySet="AlumnoLeccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoPregunta_Respuesta" Association="elearningModel.FK_AlumnoPregunta_Respuesta">
+            <End Role="Respuesta" EntitySet="Respuesta" />
+            <End Role="AlumnoPregunta" EntitySet="AlumnoPregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Leccion_Curso" Association="elearningModel.FK_Leccion_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="Leccion" EntitySet="Leccion" />
+          </AssociationSet>
+          <EntitySet Name="Pregunta" EntityType="elearningModel.Pregunta" />
+          <AssociationSet Name="FK_AlumnoPregunta_Pregunta" Association="elearningModel.FK_AlumnoPregunta_Pregunta">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="AlumnoPregunta" EntitySet="AlumnoPregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pregunta_Leccion" Association="elearningModel.FK_Pregunta_Leccion">
+            <End Role="Leccion" EntitySet="Leccion" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pregunta_TipoPregunta" Association="elearningModel.FK_Pregunta_TipoPregunta">
+            <End Role="TipoPregunta" EntitySet="TipoPregunta" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Respuesta_Pregunta" Association="elearningModel.FK_Respuesta_Pregunta">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="Respuesta" EntitySet="Respuesta" />
+          </AssociationSet>
+          <EntitySet Name="AlumnoCurso" EntityType="elearningModel.AlumnoCurso" />
+          <AssociationSet Name="FK_AlumnoCurso_AlumnoCursoEstatus" Association="elearningModel.FK_AlumnoCurso_AlumnoCursoEstatus">
+            <End Role="AlumnoCursoEstatus" EntitySet="AlumnoCursoEstatus" />
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoCurso_Curso" Association="elearningModel.FK_AlumnoCurso_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoCurso_Usuario" Association="elearningModel.FK_AlumnoCurso_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoCurso_Usuario1" Association="elearningModel.FK_AlumnoCurso_Usuario1">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AlumnoLeccion_AlumnoCurso" Association="elearningModel.FK_AlumnoLeccion_AlumnoCurso">
+            <End Role="AlumnoCurso" EntitySet="AlumnoCurso" />
+            <End Role="AlumnoLeccion" EntitySet="AlumnoLeccion" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Leccion">
+          <Key>
+            <PropertyRef Name="IdLeccion" />
+          </Key>
+          <Property Name="IdLeccion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Leccion1" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Contenido" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdCurso" Type="Int32" Nullable="false" />
+          <Property Name="PuntajeAprobatorio" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="Estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Curso" Relationship="elearningModel.FK_Leccion_Curso" FromRole="Leccion" ToRole="Curso" />
+        </EntityType>
+        <EntityType Name="Respuesta">
+          <Key>
+            <PropertyRef Name="IdRespuesta" />
+          </Key>
+          <Property Name="IdRespuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Respuesta1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Correcta" Type="Boolean" Nullable="false" />
+          <Property Name="IdPregunta" Type="Int32" Nullable="false" />
+          <Property Name="Estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Pregunta" Relationship="elearningModel.FK_Respuesta_Pregunta" FromRole="Respuesta" ToRole="Pregunta" />
+        </EntityType>
+        <Association Name="FK_AlumnoLeccion_Leccion">
+          <End Type="elearningModel.Leccion" Role="Leccion" Multiplicity="1" />
+          <End Type="elearningModel.AlumnoLeccion" Role="AlumnoLeccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leccion">
+              <PropertyRef Name="IdLeccion" />
+            </Principal>
+            <Dependent Role="AlumnoLeccion">
+              <PropertyRef Name="IdLeccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoPregunta_Respuesta">
+          <End Type="elearningModel.Respuesta" Role="Respuesta" Multiplicity="1" />
+          <End Type="elearningModel.AlumnoPregunta" Role="AlumnoPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Respuesta">
+              <PropertyRef Name="IdRespuesta" />
+            </Principal>
+            <Dependent Role="AlumnoPregunta">
+              <PropertyRef Name="IdRespuesta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Leccion_Curso">
+          <End Type="elearningModel.Curso" Role="Curso" Multiplicity="1" />
+          <End Type="elearningModel.Leccion" Role="Leccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="IdCurso" />
+            </Principal>
+            <Dependent Role="Leccion">
+              <PropertyRef Name="IdCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Pregunta">
+          <Key>
+            <PropertyRef Name="IdPregunta" />
+          </Key>
+          <Property Name="IdPregunta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pregunta1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipoPregunta" Type="Int32" Nullable="false" />
+          <Property Name="IdLeccion" Type="Int32" Nullable="false" />
+          <Property Name="Puntos" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Estatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Leccion" Relationship="elearningModel.FK_Pregunta_Leccion" FromRole="Pregunta" ToRole="Leccion" />
+          <NavigationProperty Name="TipoPregunta" Relationship="elearningModel.FK_Pregunta_TipoPregunta" FromRole="Pregunta" ToRole="TipoPregunta" />
+        </EntityType>
+        <Association Name="FK_AlumnoPregunta_Pregunta">
+          <End Type="elearningModel.Pregunta" Role="Pregunta" Multiplicity="1" />
+          <End Type="elearningModel.AlumnoPregunta" Role="AlumnoPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
+              <PropertyRef Name="IdPregunta" />
+            </Principal>
+            <Dependent Role="AlumnoPregunta">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pregunta_Leccion">
+          <End Type="elearningModel.Leccion" Role="Leccion" Multiplicity="1" />
+          <End Type="elearningModel.Pregunta" Role="Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leccion">
+              <PropertyRef Name="IdLeccion" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="IdLeccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pregunta_TipoPregunta">
+          <End Type="elearningModel.TipoPregunta" Role="TipoPregunta" Multiplicity="1" />
+          <End Type="elearningModel.Pregunta" Role="Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoPregunta">
+              <PropertyRef Name="IdTipoPregunta" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="IdTipoPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Respuesta_Pregunta">
+          <End Type="elearningModel.Pregunta" Role="Pregunta" Multiplicity="1" />
+          <End Type="elearningModel.Respuesta" Role="Respuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
+              <PropertyRef Name="IdPregunta" />
+            </Principal>
+            <Dependent Role="Respuesta">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AlumnoCurso">
+          <Key>
+            <PropertyRef Name="IdAlumnoCurso" />
+          </Key>
+          <Property Name="IdAlumnoCurso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAlumno" Type="Int32" Nullable="false" />
+          <Property Name="IdCurso" Type="Int32" Nullable="false" />
+          <Property Name="IdMaestro" Type="Int32" />
+          <Property Name="IdAlumnoCursoEstatus" Type="Int32" Nullable="false" />
+          <Property Name="Calificacion" Type="Decimal" Precision="5" Scale="2" />
+          <NavigationProperty Name="AlumnoCursoEstatus" Relationship="elearningModel.FK_AlumnoCurso_AlumnoCursoEstatus" FromRole="AlumnoCurso" ToRole="AlumnoCursoEstatus" />
+          <NavigationProperty Name="Curso" Relationship="elearningModel.FK_AlumnoCurso_Curso" FromRole="AlumnoCurso" ToRole="Curso" />
+          <NavigationProperty Name="Usuario" Relationship="elearningModel.FK_AlumnoCurso_Usuario" FromRole="AlumnoCurso" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="elearningModel.FK_AlumnoCurso_Usuario1" FromRole="AlumnoCurso" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_AlumnoCurso_AlumnoCursoEstatus">
+          <End Type="elearningModel.AlumnoCursoEstatus" Role="AlumnoCursoEstatus" Multiplicity="1" />
+          <End Type="elearningModel.AlumnoCurso" Role="AlumnoCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AlumnoCursoEstatus">
+              <PropertyRef Name="IdAlumnoCursoEstatus" />
+            </Principal>
+            <Dependent Role="AlumnoCurso">
+              <PropertyRef Name="IdAlumnoCursoEstatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoCurso_Curso">
+          <End Type="elearningModel.Curso" Role="Curso" Multiplicity="1" />
+          <End Type="elearningModel.AlumnoCurso" Role="AlumnoCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="IdCurso" />
+            </Principal>
+            <Dependent Role="AlumnoCurso">
+              <PropertyRef Name="IdCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoCurso_Usuario">
+          <End Type="elearningModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="elearningModel.AlumnoCurso" Role="AlumnoCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="AlumnoCurso">
+              <PropertyRef Name="IdAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoCurso_Usuario1">
+          <End Type="elearningModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="elearningModel.AlumnoCurso" Role="AlumnoCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="AlumnoCurso">
+              <PropertyRef Name="IdMaestro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AlumnoLeccion_AlumnoCurso">
+          <End Type="elearningModel.AlumnoCurso" Role="AlumnoCurso" Multiplicity="1" />
+          <End Type="elearningModel.AlumnoLeccion" Role="AlumnoLeccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AlumnoCurso">
+              <PropertyRef Name="IdAlumnoCurso" />
+            </Principal>
+            <Dependent Role="AlumnoLeccion">
+              <PropertyRef Name="IdAlumnoCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="elearningModelStoreContainer" CdmEntityContainer="elearningEntities">
+          <EntitySetMapping Name="AlumnoCursoEstatus">
+            <EntityTypeMapping TypeName="elearningModel.AlumnoCursoEstatus">
+              <MappingFragment StoreEntitySet="AlumnoCursoEstatus">
+                <ScalarProperty Name="IdAlumnoCursoEstatus" ColumnName="IdAlumnoCursoEstatus" />
+                <ScalarProperty Name="EstatusCurso" ColumnName="EstatusCurso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlumnoLeccion">
+            <EntityTypeMapping TypeName="elearningModel.AlumnoLeccion">
+              <MappingFragment StoreEntitySet="AlumnoLeccion">
+                <ScalarProperty Name="IdAlumnoLeccion" ColumnName="IdAlumnoLeccion" />
+                <ScalarProperty Name="IdAlumnoCurso" ColumnName="IdAlumnoCurso" />
+                <ScalarProperty Name="IdLeccion" ColumnName="IdLeccion" />
+                <ScalarProperty Name="Calificacion" ColumnName="Calificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlumnoPregunta">
+            <EntityTypeMapping TypeName="elearningModel.AlumnoPregunta">
+              <MappingFragment StoreEntitySet="AlumnoPregunta">
+                <ScalarProperty Name="IdAlumnoPregunta" ColumnName="IdAlumnoPregunta" />
+                <ScalarProperty Name="IdAlumnoLeccion" ColumnName="IdAlumnoLeccion" />
+                <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+                <ScalarProperty Name="IdRespuesta" ColumnName="IdRespuesta" />
+                <ScalarProperty Name="Puntos" ColumnName="Puntos" />
+                <ScalarProperty Name="Correcto" ColumnName="Correcto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Curso">
+            <EntityTypeMapping TypeName="elearningModel.Curso">
+              <MappingFragment StoreEntitySet="Curso">
+                <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
+                <ScalarProperty Name="Curso1" ColumnName="Curso" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoPregunta">
+            <EntityTypeMapping TypeName="elearningModel.TipoPregunta">
+              <MappingFragment StoreEntitySet="TipoPregunta">
+                <ScalarProperty Name="IdTipoPregunta" ColumnName="IdTipoPregunta" />
+                <ScalarProperty Name="TipoPregunta1" ColumnName="TipoPregunta" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="elearningModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Contrasenia" ColumnName="Contrasenia" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leccion">
+            <EntityTypeMapping TypeName="elearningModel.Leccion">
+              <MappingFragment StoreEntitySet="Leccion">
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+                <ScalarProperty Name="PuntajeAprobatorio" ColumnName="PuntajeAprobatorio" />
+                <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
+                <ScalarProperty Name="Contenido" ColumnName="Contenido" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Leccion1" ColumnName="Leccion" />
+                <ScalarProperty Name="IdLeccion" ColumnName="IdLeccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Respuesta">
+            <EntityTypeMapping TypeName="elearningModel.Respuesta">
+              <MappingFragment StoreEntitySet="Respuesta">
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+                <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+                <ScalarProperty Name="Correcta" ColumnName="Correcta" />
+                <ScalarProperty Name="Respuesta1" ColumnName="Respuesta" />
+                <ScalarProperty Name="IdRespuesta" ColumnName="IdRespuesta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pregunta">
+            <EntityTypeMapping TypeName="elearningModel.Pregunta">
+              <MappingFragment StoreEntitySet="Pregunta">
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+                <ScalarProperty Name="Puntos" ColumnName="Puntos" />
+                <ScalarProperty Name="IdLeccion" ColumnName="IdLeccion" />
+                <ScalarProperty Name="IdTipoPregunta" ColumnName="IdTipoPregunta" />
+                <ScalarProperty Name="Pregunta1" ColumnName="Pregunta" />
+                <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlumnoCurso">
+            <EntityTypeMapping TypeName="elearningModel.AlumnoCurso">
+              <MappingFragment StoreEntitySet="AlumnoCurso">
+                <ScalarProperty Name="Calificacion" ColumnName="Calificacion" />
+                <ScalarProperty Name="IdAlumnoCursoEstatus" ColumnName="IdAlumnoCursoEstatus" />
+                <ScalarProperty Name="IdMaestro" ColumnName="IdMaestro" />
+                <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
+                <ScalarProperty Name="IdAlumno" ColumnName="IdAlumno" />
+                <ScalarProperty Name="IdAlumnoCurso" ColumnName="IdAlumnoCurso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
