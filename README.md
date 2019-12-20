@@ -75,7 +75,7 @@ también se tiene una "Calificacion", para posteriormente compararse con el Punt
 
 
 ### Preguntas. 
-Se tiene el CRUD (solamente lo pueden usar los maestros activos)
+Se tiene el CRUD (solamente lo pueden usar los maestros activos).
 Son las preguntas que tiene la lección, existen 4 tipos en el catálogo TipoPregunta:
 * 1	Booleana: 2 Respuestas, 1 es verdadera
 * 2	Multiple 1 Correcta: Opción múltiple donde solo una respuesta es correcta 
