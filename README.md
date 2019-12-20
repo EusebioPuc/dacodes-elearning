@@ -8,7 +8,10 @@
   ahora hacemos clic derecho sobre la solución y buscamos la opción ADD>EXISTING PROJECT, buscamos y seleccionamos el proyecto "elearning"
 * Crear una base de datos en SQL SERVER (Usada SQL Server Management Studio v17.9) con el nombre "elearning", importar en ella el archivo "elearning/Models/BaseDatosElearning.sql"
 * Actualizar la cadena de conexión con la base de datos (web.config), sustituyendo el "data source, user id y password", también se podría cambiar a la autenticación por windows:
-*<add name="elearningEntities" connectionString="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=HQSKY-OLNEUS;initial catalog=elearning;persist security info=True;user id=sa;password=C@7-2016;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+<pre>
+<!-- <add name="elearningEntities" connectionString="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=HQSKY-OLNEUS;initial catalog=elearning;persist security info=True;user id=sa;password=C@7-2016;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+-->
+</pre>
 
 
 * Ejecutar 🚀
