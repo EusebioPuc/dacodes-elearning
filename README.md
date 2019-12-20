@@ -127,7 +127,7 @@ sin embargo se dejó la oportunidad de tener un usuario Admin.
 
 
 
-## Adicionalmente pondría haría esto con más tiempo:
+## Adicionalmente haría esto con más tiempo:
 * Cerrar la aplicación para hacer forzoso el uso del token en cada petición
 * Restringir las peticiones por medio de los roles
 * Mensajes de error más amigables
