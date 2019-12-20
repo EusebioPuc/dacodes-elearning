@@ -12,13 +12,11 @@
 <!-- <add name="elearningEntities" connectionString="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=HQSKY-OLNEUS;initial catalog=elearning;persist security info=True;user id=sa;password=C@7-2016;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
 -->
 </pre>
-
-
 * Ejecutar 🚀
 * Adicionalmente: después de cargar en el explorador el localhost con el número de puerto, puede agregarse a la URL */swagger* 
 para probar todos los controladores y acciones de la API
 
-##Herramientas de desarrollo
+## Herramientas de desarrollo
 * Visual Studio 2017 Community
 * Framework 4.6.1
 * SQL Server Management Studio v17.9
@@ -29,7 +27,7 @@ para probar todos los controladores y acciones de la API
 es sencilla la sincronización de cambios de la base de datos a la aplicación.
 * Swashbuckle. Facilita el diseño, construcción, documentación y consumo de servicios web RESTful
 
-##Uso
+## Uso
 Se realizaron las siguientes acciones en los siguientes controladores:
 
 ### Cursos. 
