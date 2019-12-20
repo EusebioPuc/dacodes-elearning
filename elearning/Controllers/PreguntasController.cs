@@ -17,88 +17,120 @@ namespace elearning.Controllers
         private elearningEntities db = new elearningEntities();
 
         // GET: api/Preguntas
-        public IQueryable<Pregunta> GetPregunta()
+        [Route("api/Preguntas/GetPregunta/{idUsuario}")]
+        public IQueryable<Pregunta> GetPregunta(int idUsuario)
         {
-            return db.Pregunta;
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
+            {
+                return db.Pregunta;
+            }
+            else
+                return null;
         }
 
         // GET: api/Preguntas/5
+        [Route("api/Preguntas/GetPregunta/{id}/{idUsuario}")]
         [ResponseType(typeof(Pregunta))]
-        public IHttpActionResult GetPregunta(int id)
+        public IHttpActionResult GetPregunta(int id, int idUsuario)
         {
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return NotFound();
-            }
-
-            return Ok(pregunta);
-        }
-
-        // PUT: api/Preguntas/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutPregunta(int id, Pregunta pregunta)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != pregunta.IdPregunta)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(pregunta).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PreguntaExists(id))
+                Pregunta pregunta = db.Pregunta.Find(id);
+                if (pregunta == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return StatusCode(HttpStatusCode.NoContent);
+                return Ok(pregunta);
+            }
+            else return BadRequest();
+        }
+
+        // PUT: api/Preguntas/5
+        [Route("api/Preguntas/PutPregunta/{id}/{idUsuario}")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutPregunta(int id, int idUsuario, [FromBody]Pregunta pregunta)
+        {
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                if (id != pregunta.IdPregunta)
+                {
+                    return BadRequest();
+                }
+
+                db.Entry(pregunta).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PreguntaExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            else return BadRequest();
         }
 
         // POST: api/Preguntas
+        [Route("api/Preguntas/PostPregunta/{idUsuario}")]
         [ResponseType(typeof(Pregunta))]
-        public IHttpActionResult PostPregunta(Pregunta pregunta)
+        public IHttpActionResult PostPregunta(int idUsuario, [FromBody]Pregunta pregunta)
         {
-            if (!ModelState.IsValid)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                db.Pregunta.Add(pregunta);
+                db.SaveChanges();
+
+                return Ok(new { id = pregunta.IdPregunta });
+                //return CreatedAtRoute("DefaultApi", new { id = pregunta.IdPregunta }, pregunta);
             }
-
-            db.Pregunta.Add(pregunta);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = pregunta.IdPregunta }, pregunta);
+            else return BadRequest();
         }
 
         // DELETE: api/Preguntas/5
+        [Route("api/Preguntas/DeletePregunta/{id}/{idUsuario}")]
         [ResponseType(typeof(Pregunta))]
-        public IHttpActionResult DeletePregunta(int id)
+        public IHttpActionResult DeletePregunta(int id, int idUsuario)
         {
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return NotFound();
+                Pregunta pregunta = db.Pregunta.Find(id);
+                if (pregunta == null)
+                {
+                    return NotFound();
+                }
+
+                db.Pregunta.Remove(pregunta);
+                db.SaveChanges();
+
+                return Ok(pregunta);
             }
-
-            db.Pregunta.Remove(pregunta);
-            db.SaveChanges();
-
-            return Ok(pregunta);
+            else return BadRequest();
         }
 
         protected override void Dispose(bool disposing)

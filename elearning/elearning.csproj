@@ -114,6 +114,8 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AlumnosCursosController.cs" />
+    <Compile Include="Controllers\AlumnosLeccionesController.cs" />
     <Compile Include="Controllers\CursosController.cs" />
     <Compile Include="Controllers\LeccionesController.cs" />
     <Compile Include="Controllers\PreguntasController.cs" />

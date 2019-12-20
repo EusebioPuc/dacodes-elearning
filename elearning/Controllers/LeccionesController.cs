@@ -17,103 +17,135 @@ namespace elearning.Controllers
         private elearningEntities db = new elearningEntities();
 
         // GET: api/Lecciones
-        public IQueryable<Leccion> GetLeccion()
+        [Route("api/Lecciones/GetLeccion/{idUsuario}")]
+        public IQueryable<Leccion> GetLeccion(int idUsuario)
         {
-            return db.Leccion;
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
+            {
+                return db.Leccion;
+            }
+            else
+                return null;
         }
 
         // GET: api/Lecciones/5
+        [Route("api/Lecciones/GetLeccion/{id}/{idUsuario}")]
         [ResponseType(typeof(Leccion))]
-        public IHttpActionResult GetLeccion(int id)
+        public IHttpActionResult GetLeccion(int id, int idUsuario)
         {
-            Leccion leccion = db.Leccion.Find(id);
-            if (leccion == null)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return NotFound();
-            }
-
-            return Ok(leccion);
-        }
-
-        // PUT: api/Lecciones/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutLeccion(int id, Leccion leccion)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != leccion.IdLeccion)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(leccion).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LeccionExists(id))
+                Leccion leccion = db.Leccion.Find(id);
+                if (leccion == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return StatusCode(HttpStatusCode.NoContent);
+                return Ok(leccion);
+            }
+            else return BadRequest();
+        }
+
+        // PUT: api/Lecciones/5
+        [Route("api/Lecciones/PutLeccion/{id}/{idUsuario}")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutLeccion(int id, int idUsuario, [FromBody]Leccion leccion)
+        {
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                if (id != leccion.IdLeccion)
+                {
+                    return BadRequest();
+                }
+
+                db.Entry(leccion).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LeccionExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            else return BadRequest();
         }
 
         // POST: api/Lecciones
+        [Route("api/Lecciones/PostLeccion/{idUsuario}")]
         [ResponseType(typeof(Leccion))]
-        public IHttpActionResult PostLeccion(Leccion leccion)
+        public IHttpActionResult PostLeccion(int idUsuario, [FromBody]Leccion leccion)
         {
-            if (!ModelState.IsValid)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return BadRequest(ModelState);
-            }
-
-            db.Leccion.Add(leccion);
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (LeccionExists(leccion.IdLeccion))
+                if (!ModelState.IsValid)
                 {
-                    return Conflict();
+                    return BadRequest(ModelState);
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return CreatedAtRoute("DefaultApi", new { id = leccion.IdLeccion }, leccion);
+                db.Leccion.Add(leccion);
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateException)
+                {
+                    if (LeccionExists(leccion.IdLeccion))
+                    {
+                        return Conflict();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return Ok(new { id = leccion.IdLeccion });
+                //return CreatedAtRoute("DefaultApi", new { id = leccion.IdLeccion }, leccion);
+            }
+            else return BadRequest();
         }
 
         // DELETE: api/Lecciones/5
+        [Route("api/Lecciones/DeleteLeccion/{id}/{idUsuario}")]
         [ResponseType(typeof(Leccion))]
-        public IHttpActionResult DeleteLeccion(int id)
+        public IHttpActionResult DeleteLeccion(int id, int idUsuario)
         {
-            Leccion leccion = db.Leccion.Find(id);
-            if (leccion == null)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return NotFound();
+                Leccion leccion = db.Leccion.Find(id);
+                if (leccion == null)
+                {
+                    return NotFound();
+                }
+
+                db.Leccion.Remove(leccion);
+                db.SaveChanges();
+
+                return Ok(leccion);
             }
-
-            db.Leccion.Remove(leccion);
-            db.SaveChanges();
-
-            return Ok(leccion);
+            else return BadRequest();
         }
 
         // GET: api/LeccionAlumno/5
@@ -127,12 +159,13 @@ namespace elearning.Controllers
         /// <param name="idCurso">IdCurso</param>
         /// <returns></returns>
         [HttpGet]
+        [Route("api/Lecciones/LeccionAlumno/{idUsuario}/{idACurso}/{idCurso}")]
         [ResponseType(typeof(List<LeccionAlumnoVM>))]
-        public IHttpActionResult LeccionAlumno(int id,int idACurso, int idCurso)
+        public IHttpActionResult LeccionAlumno(int idUsuario, int idACurso, int idCurso)
         {
             List<LeccionAlumnoVM> leccion = new List<LeccionAlumnoVM>();
             
-            Usuario alumno = db.Usuario.Where(x => x.IdUsuario == id && x.IdRol == 3 && x.Estatus == "ACTIVO").FirstOrDefault();
+            Usuario alumno = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 3 && x.Estatus == "ACTIVO").FirstOrDefault();
             if (alumno != null)
             {
                 //AlumnoCurso oAlumnoCursos = db.AlumnoCurso.Where(x => x.IdAlumno == alumno.IdUsuario && x.IdCurso==idACurso).FirstOrDefault();

@@ -17,103 +17,137 @@ namespace elearning.Controllers
         private elearningEntities db = new elearningEntities();
 
         // GET: api/Cursos
-        public IQueryable<Curso> GetCurso()
+        [Route("api/Cursos/GetCurso/{idUsuario}")]
+        public IQueryable<Curso> GetCurso(int idUsuario)
         {
-            return db.Curso;
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
+            {
+                return db.Curso;
+            }
+            else
+                return null;
         }
 
         // GET: api/Cursos/5
+        [Route("api/Cursos/GetCurso/{id}/{idUsuario}")]
         [ResponseType(typeof(Curso))]
-        public IHttpActionResult GetCurso(int id)
+        public IHttpActionResult GetCurso(int id, int idUsuario)
         {
-            Curso curso = db.Curso.Find(id);
-            if (curso == null)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return NotFound();
-            }
+                Curso curso = db.Curso.Find(id);
+                if (curso == null)
+                {
+                    return NotFound();
+                }
 
-            return Ok(curso);
+                return Ok(curso);
+            }
+            else return BadRequest();            
         }
 
         // PUT: api/Cursos/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCurso(int id, Curso curso)
+        [Route("api/Cursos/PutCurso/{id}/{idUsuario}")]
+        public IHttpActionResult PutCurso(int id, int idUsuario, [FromBody]Curso curso )
         {
-            if (!ModelState.IsValid)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return BadRequest(ModelState);
-            }
-
-            if (id != curso.IdCurso)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(curso).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CursoExists(id))
+                if (!ModelState.IsValid)
                 {
-                    return NotFound();
+                    return BadRequest(ModelState);
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return StatusCode(HttpStatusCode.NoContent);
+                if (id != curso.IdCurso)
+                {
+                    return BadRequest();
+                }
+
+                db.Entry(curso).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CursoExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            else return BadRequest();
         }
 
         // POST: api/Cursos
+        [Route("api/Cursos/PostCurso/{idUsuario}")]
         [ResponseType(typeof(Curso))]
-        public IHttpActionResult PostCurso(Curso curso)
+        public IHttpActionResult PostCurso(int idUsuario, [FromBody]Curso curso)
         {
-            if (!ModelState.IsValid)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                db.Curso.Add(curso);
+                db.SaveChanges();
+
+                return Ok(new { id = curso.IdCurso });
+                //return CreatedAtRoute("DefaultApi", new { id = curso.IdCurso}, curso);
             }
+            else return BadRequest();
 
-            db.Curso.Add(curso);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = curso.IdCurso }, curso);
         }
 
         // DELETE: api/Cursos/5
+        [Route("api/Cursos/DeleteCurso/{id}/{idUsuario}")]
         [ResponseType(typeof(Curso))]
-        public IHttpActionResult DeleteCurso(int id)
+        public IHttpActionResult DeleteCurso(int id, int idUsuario)
         {
-            Curso curso = db.Curso.Find(id);
-            if (curso == null)
+            Usuario maestro = db.Usuario.Where(x => x.IdUsuario == idUsuario && x.IdRol == 2 && x.Estatus == "ACTIVO").FirstOrDefault();
+            if (maestro != null)
             {
-                return NotFound();
+                Curso curso = db.Curso.Find(id);
+                if (curso == null)
+                {
+                    return NotFound();
+                }
+
+                db.Curso.Remove(curso);
+                db.SaveChanges();
+
+                return Ok(curso);
             }
-
-            db.Curso.Remove(curso);
-            db.SaveChanges();
-
-            return Ok(curso);
+            else return BadRequest();
         }
 
         /// <summary>
         /// Obtiene una lista de todos los cursos, indicando a cuáles puede acceder el estudiante
         /// Si puede acceder es porque esta inscrito
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Es el IdUsuario del alumno</param>
         /// <returns></returns>
         // GET: api/CursosAlumno/5
         [HttpGet]
+        [Route("api/Cursos/CursosAlumno/{idUsuario}")]
         [ResponseType(typeof(List<CursoAlumnoVM>))]
-        public IHttpActionResult CursosAlumno(int id)
+        public IHttpActionResult CursosAlumno(int idUsuario)
         {
             List<CursoAlumnoVM> cursos = new List<CursoAlumnoVM>();
-            Usuario alumno= db.Usuario.Where(x=> x.IdUsuario==id && x.IdRol==3 && x.Estatus=="ACTIVO").FirstOrDefault();
+            Usuario alumno= db.Usuario.Where(x=> x.IdUsuario== idUsuario && x.IdRol==3 && x.Estatus=="ACTIVO").FirstOrDefault();
             if (alumno!=null)
             {
                 List<AlumnoCurso> lsAlumnoCursos = db.AlumnoCurso.Where(x=> x.IdAlumno==alumno.IdUsuario).ToList();
